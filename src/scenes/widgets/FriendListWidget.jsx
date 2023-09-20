@@ -9,7 +9,7 @@ const FriendListWidget = ({ userId }) => {
     const dispatch = useDispatch();
     const { palette } = useTheme();
     const token = useSelector((state) => state.token);
-    const friends = useSelector((state) => state.user.friends);
+    const friends = useSelector((state) => []);
     const apiUrl = process.env.REACT_APP_API_URL;
 
     const getFriends = async () => {
@@ -17,7 +17,8 @@ const FriendListWidget = ({ userId }) => {
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` },
         });
-        const data = await response.json();
+        const data = await response.json().formattedFriends;
+        // console.log(data);
         dispatch(setFriends({ friends: data }));
     };
 
@@ -25,6 +26,7 @@ const FriendListWidget = ({ userId }) => {
         getFriends();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+    console.log(friends);
     return (
         <WidgetWrapper>
             <Typography
